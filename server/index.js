@@ -2,6 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
+// Fail fast if required secrets are not configured
+if (!process.env.JWT_SECRET) {
+    console.error('FATAL: JWT_SECRET environment variable is not set.');
+    process.exit(1);
+}
+
 const authRoutes = require('./routes/auth');
 
 const app = express();
