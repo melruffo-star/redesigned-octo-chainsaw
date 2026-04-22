@@ -27,11 +27,6 @@ userSchema.pre('save', async function (next) {
     next();
 });
 
-// Compare candidate password against hashed password
-userSchema.methods.comparePassword = function (candidatePassword) {
-    return bcrypt.compare(candidatePassword, this.password);
-};
-
 // Never serialize the password field in JSON responses
 userSchema.methods.toJSON = function () {
     const obj = this.toObject();

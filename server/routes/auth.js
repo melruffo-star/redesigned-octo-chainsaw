@@ -66,6 +66,9 @@ router.post('/login', async (req, res) => {
     if (typeof username !== 'string' || typeof password !== 'string') {
         return res.status(400).json({ error: 'Invalid input.' });
     }
+    if (password.length > 128) {
+        return res.status(400).json({ error: 'Password must be at most 128 characters.' });
+    }
 
     try {
         const user = await User.findOne({ username: String(username) });
@@ -105,7 +108,7 @@ router.get('/current', authenticate, async (req, res) => {
     try {
         const user = await User.findById(req.user.id);
         if (!user) {
-            return res.status(404).json({ error: 'User not found.' });
+            return res.status(401).json({ error: 'Unauthorized.' });
         }
         // toJSON() strips the password field (see User model)
         res.status(200).json(user);
